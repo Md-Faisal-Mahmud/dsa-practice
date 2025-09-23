@@ -51,16 +51,16 @@ public class TreeBuilder
     #region Tree
     public TreeNode BuildTreeIterativeDFS(TreeNode root, List<TreeNode> nodes) // iterative way
     {
-        var lookup = nodes.ToLookup(n => n.ParentId);
+        ILookup<int?, TreeNode> lookup = nodes.ToLookup(n => n.ParentId);
 
         var stack = new Stack<TreeNode>();
         stack.Push(root);
 
         while (stack.Count > 0)
         {
-            var current = stack.Pop();
+            TreeNode current = stack.Pop();
 
-            var children = lookup[current.Id].ToList();
+            List<TreeNode> children = lookup[current.Id].ToList();
             current.Children = children;
 
             // push children in reverse to keep left-to-right order
