@@ -25,15 +25,21 @@
 #region Tree Building with recursion from adjacent List
 using DFSBFS.TreeBuilding;
 
-#region dataset
+#region DATASET ---------
 var nodes = new List<TreeNode>
 {
     new TreeNode { Id = 1, ParentId = null, Value = 'A' },
     new TreeNode { Id = 2, ParentId = 1, Value = 'B' },
     new TreeNode { Id = 3, ParentId = 1, Value = 'C' },
-    //new TreeNode { Id = 4, ParentId = 2, Value = 'D' },
-    //new TreeNode { Id = 5, ParentId = 2, Value = 'E' },
+    new TreeNode { Id = 4, ParentId = 2, Value = 'D' },
+    new TreeNode { Id = 5, ParentId = 2, Value = 'E' },
 };
+
+////      A
+////     / \
+////    B   C
+////   / \
+////  D   E
 
 //var nodes = new List<TreeNode>
 //{
