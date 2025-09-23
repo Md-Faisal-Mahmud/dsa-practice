@@ -53,17 +53,35 @@ public class TreeBuilder
     {
         ILookup<int?, TreeNode> lookup = nodes.ToLookup(n => n.ParentId);
 
+        //var stack = new Stack<TreeNode>();
+        //stack.Push(root);
+
+        //while (stack.Count > 0)
+        //{
+        //    TreeNode current = stack.Pop();
+
+        //    List<TreeNode> children = lookup[current.Id].ToList();
+        //    current.Children = children;
+
+        //    // push children in reverse to keep left-to-right order
+        //    for (int i = children.Count - 1; i >= 0; i--)
+        //        stack.Push(children[i]);
+        //}
+
+        //return root;
+
         var stack = new Stack<TreeNode>();
         stack.Push(root);
 
         while (stack.Count > 0)
         {
-            TreeNode current = stack.Pop();
+            var current = stack.Pop();
 
-            List<TreeNode> children = lookup[current.Id].ToList();
+            // 👇 Every time we scan the full list to find children
+            var children = nodes.Where(n => n.ParentId == current.Id).ToList();
             current.Children = children;
 
-            // push children in reverse to keep left-to-right order
+            // push in reverse to keep left-to-right order
             for (int i = children.Count - 1; i >= 0; i--)
                 stack.Push(children[i]);
         }
