@@ -18,3 +18,6 @@ B.Children.Add(E);
 
 var dfs = new DFS();
 dfs.DFSRecursive(A);
+
+// bfs
+var bfs = new BFS();

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFS", "src\DFS\DFS.csproj", "{3137A602-FBC2-4FD1-B386-EE2378059053}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFSBFS", "src\DFS\DFSBFS.csproj", "{3137A602-FBC2-4FD1-B386-EE2378059053}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A_Practice", "src\Practice\A_Practice.csproj", "{61E543AD-B07F-4A80-948B-AF411699AA10}"
 EndProject

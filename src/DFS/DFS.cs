@@ -11,9 +11,7 @@ public class DFS
     {
         if (node == null) return;
 
-        // 1. Visit the current node
         Console.WriteLine(node.Value); // * printing before the loop
-
         // 2. Visit each child in order
         foreach (var child in node.Children)
         {
@@ -29,21 +27,22 @@ public class DFS
 //  D   E
 
 
-//public class DFS
-//{
-//    public void DFSStack(Node root)
-//    {
-//        var stack = new Stack<Node>();
-//        stack.Push(root);
+public class DFSManual
+{
+    public void DFSIterative(Node root)
+    {
+        var stack = new Stack<Node>();
+        stack.Push(root);
 
-//        while (stack.Count > 0)
-//        {
-//            var node = stack.Pop();
-//            Console.WriteLine(node.Value);
+        while (stack.Count > 0)
+        {
+            var node = stack.Pop();
+            Console.WriteLine(node.Value);
 
-//            // Push children in reverse order to visit left first
-//            for (int i = node.Children.Count - 1; i >= 0; i--)
-//                stack.Push(node.Children[i]);
-//        }
-//    }
-//}
+            // Push right → then left (so left is visited first)
+            for (int i = node.Children.Count - 1; i >= 0; i--)
+                stack.Push(node.Children[i]);
+        }
+    }
+
+}
