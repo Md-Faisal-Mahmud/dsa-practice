@@ -26,17 +26,17 @@ public class TreeBuilder
         // 2. For each root, build its subtree
         foreach (var root in roots)
         {
-            BuildTreeV2(root);
+            BuildTree_V2(root);
         }
 
         // 3. Recursive local function
-        void BuildTreeV2(TreeNode node)
+        void BuildTree_V2(TreeNode node)
         {
             var children = lists.Where(n => n.ParentId == node.Id).ToList();
 
             foreach (var child in children)
             {
-                BuildTreeV2(child);       // fill child.Children
+                BuildTree_V2(child);       // fill child.Children
                 node.Children.Add(child); // ✅ attach the actual child
             }
         }
