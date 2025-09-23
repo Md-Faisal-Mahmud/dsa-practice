@@ -1,5 +1,10 @@
 ﻿namespace Namespace;
-
+/*
+    DFS(node) :
+        process(node)
+        for each child of node:
+            DFS(child)
+*/
 public class Node
 {
     public char Value;
