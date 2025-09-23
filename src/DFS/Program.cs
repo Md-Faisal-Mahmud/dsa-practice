@@ -23,7 +23,6 @@
 // bfs
 
 #region Tree Building with recursion from adjacent List
-using System.Collections.Generic;
 using DFSBFS.TreeBuilding;
 
 #region dataset
@@ -46,21 +45,21 @@ var nodes = new List<TreeNode>
 //};
 #endregion
 
-/// TREE VERSION
-
-
-/// FOREST VERSION
 var builder = new TreeBuilder();
-#region v1
+#region BSF ---------
+///TREE
+///FOREST
+#endregion
+
+#region DFS ---------
+///TREE
+var root = nodes.First(n => n.ParentId == null);
+var treeDFSIterative = builder.BuildTreeIterativeDFS(root, nodes);
+
+///FOREST
 //List<TreeNode> roots = builder.BuildTree(nodes);  // returns a list of root(s)
+//List<TreeNode> forestV2 = builder.ForestV2(nodes);
+//List<TreeNode> forest = builder.BuildForestIterative(nodes);
 #endregion
-
-#region v2
-List<TreeNode> forestV2 = builder.ForestV2(nodes);
 #endregion
-Console.WriteLine("");
-#endregion
-
-#region v3
-var forest = builder.BuildForestIterative(nodes);
-#endregion
+Console.WriteLine();
