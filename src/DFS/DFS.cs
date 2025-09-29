@@ -1,4 +1,6 @@
-﻿namespace Namespace;
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace Namespace;
 /*
     DFS(node) :
         process(node)
@@ -40,12 +42,14 @@ public class DFSManual
         stack.Push(1);
         stack.Push(2);
         stack.Push(3);
+
         var stackSize = stack.Count;
         for (var i = 0; i < stackSize; i++)
         {
             var currentPopItem = stack.Pop();
             Console.WriteLine(currentPopItem);
         }
+
         //while (stack.Count > 0)
         //{
         //    var node = stack.Pop();
@@ -58,15 +62,17 @@ public class DFSManual
         var stack = new Stack<Node>();
         stack.Push(root);
 
-        for (int i = 0; i < stack.Count; i++)
-        {
-            var node = stack.Pop();
-            Console.WriteLine(node.Value);
+        //for (; stack.Count > 0;)
+        //{
+        //    var currentRemoved = stack.Pop();
+        //    Console.WriteLine(currentRemoved.Value);
 
-            // Push right → then left (so left is visited first)
-            for (int j = node.Children.Count - 1; j >= 0; j--)
-                stack.Push(node.Children[j]);
-        }
+        //    // Push children in reverse order
+        //    for (int i = currentRemoved.Children.Count - 1; i >= 0; i--)
+        //    {
+        //        stack.Push(currentRemoved.Children[i]);
+        //    }
+        //}
 
         while (stack.Count > 0)
         {
