@@ -17,13 +17,14 @@ public class DFS
     public void DFSRecursive(Node node)
     {
         if (node == null) return;
-
-        //Console.WriteLine(node.Value); // * printing before the loop
+        //Console.WriteLine("Enter " + node.Value);
+        Console.WriteLine(node.Value); // * printing before the loop
         // 2. Visit each child in order
         foreach (var child in node.Children)
         {
             DFSRecursive(child);
         }
+        //Console.WriteLine("Exit " + node.Value);
     }
 }
 
