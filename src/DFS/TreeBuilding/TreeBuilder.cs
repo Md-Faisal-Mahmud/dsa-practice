@@ -55,19 +55,15 @@ public class TreeBuilder
 
         //var stack = new Stack<TreeNode>();
         //stack.Push(root);
-
         //while (stack.Count > 0)
         //{
         //    TreeNode current = stack.Pop();
-
         //    List<TreeNode> children = lookup[current.Id].ToList();
         //    current.Children = children;
-
         //    // push children in reverse to keep left-to-right order
         //    for (int i = children.Count - 1; i >= 0; i--)
         //        stack.Push(children[i]);
         //}
-
         //return root;
 
         var stack = new Stack<TreeNode>();
@@ -91,7 +87,7 @@ public class TreeBuilder
     #endregion
 
     #region Forest
-    public List<TreeNode> BuildTree(List<TreeNode> nodes, int? parentId = null)
+    public List<TreeNode> BuildTree(List<TreeNode> nodes, int? parentId = null) // forest
     {
         var roots = nodes.Where(n => n.ParentId == parentId).ToList();
 
@@ -107,7 +103,7 @@ public class TreeBuilder
         return roots; // return all roots (forest)
     }
 
-    public List<TreeNode> ForestV2(List<TreeNode> lists)
+    public List<TreeNode> ForestV2(List<TreeNode> lists) // forest v2
     {
         // 1. Find all root nodes (ParentId == null)
         var roots = lists.Where(n => n.ParentId == null).ToList();

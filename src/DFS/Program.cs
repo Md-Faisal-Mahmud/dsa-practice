@@ -65,12 +65,12 @@ var builder = new TreeBuilder();
 
 #region DFS ---------
 ///TREE
-var root = nodes.First(n => n.ParentId == null);
-var treeDFSIterative = builder.BuildTreeIterativeDFS(root, nodes);
+//var root = nodes.First(n => n.ParentId == null);
+//var treeDFSIterative = builder.BuildTreeIterativeDFS(root, nodes);
 
-///FOREST
+///FOREST -- Don't run all at a time.
 //List<TreeNode> roots = builder.BuildTree(nodes);  // returns a list of root(s)
-//List<TreeNode> forestV2 = builder.ForestV2(nodes);
+List<TreeNode> forestV2 = builder.ForestV2(nodes);
 //List<TreeNode> forest = builder.BuildForestIterative(nodes);
 #endregion
 #endregion
