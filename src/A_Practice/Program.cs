@@ -1,85 +1,85 @@
-﻿
-//public class Solution
+﻿//using System;
+//using System.Threading;
+//using System.Threading.Tasks;
+
+//public class BankAccount
 //{
-//    public bool IsAnagram(string s, string t)
+//    public int Balance { get; set; }  // <-- Mutable
+
+//    public void Deposit(int amount)
 //    {
-//        //if (s.Length != t.Length)
-//        //{
-//        //    return false;
-//        //}
-
-//        Dictionary<char, int> countS = new Dictionary<char, int>();
-//        Dictionary<char, int> countT = new Dictionary<char, int>();
-//        for (int i = 0; i < s.Length; i++)
-//        {
-//            countS[s[i]] = countS.GetValueOrDefault(s[i], 0) + 1;
-//            countT[t[i]] = countT.GetValueOrDefault(t[i], 0) + 1;
-//        }
-
-//        var x1111 = countS.OrderByDescending(x => x.Key);
-//        var y1111 = countT.OrderByDescending(x => x.Key);
-//        var res = countS.Except(countT);
-
-//        return countS.Count == countT.Count && !countS.Except(countT).Any();
-//    }
-
-//    public static void Main(string[] args)
-//    {
-//        //Solution solution = new Solution();
-//        //string s = "ccat";
-//        //string t = "atcd";
-//        //bool result = solution.IsAnagram(s, t);
-//        //Console.WriteLine(result); // Output: True
-
-//        var counter = new Counter();
-//        Parallel.For(0, 1000, i =>
-//        {
-//            counter.Value++;
-//        });
-//        Console.WriteLine(counter.Value);
-
-//        var counter = new Counter();
-//        Parallel.For(0, 1000, i =>
-//        {
-//            lock (counter)
-//            {
-//                counter.Value++;
-//            }
-//        });
-//        Console.WriteLine(counter.Value);
-
+//        Balance += amount;  // ❌ Not thread-safe
 //    }
 //}
 
+//class Program
+//{
+//    static void Main()
+//    {
+//        var account = new BankAccount { Balance = 0 };
+
+//        // Run 1000 deposits in parallel
+//        Parallel.For(0, 1000, i =>
+//        {
+//            account.Deposit(1);
+//        });
+
+//        Console.WriteLine($"Final Balance = {account.Balance}");
+//    }
+//}
+
+
+//using System;
+//using System.Threading.Tasks;
+
+//public record BankAccount(int Balance) // <-- Immutable
+//{
+//    public BankAccount Deposit(int amount)
+//        => new BankAccount(Balance + amount);
+//}
+
+//class Program
+//{
+//    static void Main()
+//    {
+//        var account = new BankAccount(0);
+
+//        Parallel.For(0, 1000, i =>
+//        {
+//            // Each thread creates its own copy, no shared mutation
+//            account = account.Deposit(1);
+//        });
+
+//        Console.WriteLine($"Final Balance = {account.Balance}");
+//    }
+//}
+
+
 using System;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+
+public record BankAccount(int Balance)
+{
+    public BankAccount Deposit(int amount)
+        => new BankAccount(Balance + amount);
+}
 
 class Program
 {
     static void Main()
     {
-        int n = 50_000_000;
+        var deposits = Enumerable.Range(0, 1000);
 
-        // Single-threaded loop
-        var sw = Stopwatch.StartNew();
-        long sum1 = 0;
-        for (int i = 0; i < n; i++)
-        {
-            sum1 += i;
-        }
-        sw.Stop();
-        Console.WriteLine($"Single-threaded sum: {sum1}, Time: {sw.ElapsedMilliseconds} ms");
+        // Each thread creates its own account and returns it
+        var results = deposits.AsParallel()
+                              .Select(_ => new BankAccount(0).Deposit(1))
+                              .ToList();
 
-        // Parallel.For loop
-        sw.Restart();
-        long sum2 = 0;
-        Parallel.For(0, n,
-            () => 0L, // Initialize thread-local sum
-            (i, loopState, localSum) => localSum + i, // accumulate in local sum
-            localSum => Interlocked.Add(ref sum2, localSum) // combine safely
-        );
-        sw.Stop();
-        Console.WriteLine($"Parallel sum: {sum2}, Time: {sw.ElapsedMilliseconds} ms");
+        // Aggregate safely
+        var finalAccount = new BankAccount(results.Sum(a => a.Balance));
+
+        Console.WriteLine($"Final Balance = {finalAccount.Balance}");
     }
 }
+

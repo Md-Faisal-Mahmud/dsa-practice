@@ -1,133 +1,66 @@
-﻿#region HTTP Fetching Async
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Threading;
+using System.Linq;
+
 class Program
 {
     static async Task Main()
     {
-        string[] urls = new string[]
+        // Base URLs (only 5 unique ones)
+        string[] baseUrls =
         {
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
-            "https://example.com",
-            "https://example.org",
-            "https://example.net",
+            "https://www.example.com",
+            "https://www.microsoft.com",
+            "https://www.github.com",
+            "https://www.stackoverflow.com",
+            "https://www.wikipedia.org"
         };
 
-        // Async approach - non-blocking, all requests start together
-        var sw = System.Diagnostics.Stopwatch.StartNew();
-        Task<string>[] tasks = new Task<string>[urls.Length];
+        // Make 100 URLs by repeating the base list
+        string[] urls = Enumerable.Range(0, 20)
+                                  .SelectMany(_ => baseUrls)
+                                  .ToArray(); // 20 × 5 = 100
 
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (compatible; ExampleApp/1.0)");
+
+        // --- Async version ---
+        var sw = Stopwatch.StartNew();
+
+        var tasks = new Task<string>[urls.Length];
         for (int i = 0; i < urls.Length; i++)
-        {
-            tasks[i] = FetchAsync(urls[i]);
-        }
+            tasks[i] = httpClient.GetStringAsync(urls[i]);
 
-        string[] results = await Task.WhenAll(tasks);
+        var results = await Task.WhenAll(tasks);
+
         sw.Stop();
+        Console.WriteLine($"Async finished in {sw.ElapsedMilliseconds} ms");
+        Console.WriteLine($"Async got {results.Length} results");
 
-        Console.WriteLine($"Async fetch finished in {sw.ElapsedMilliseconds} ms");
+        Console.WriteLine();
+        Console.WriteLine("Press ENTER to run Parallel version...");
+        Console.ReadLine();
 
-        // Print results lengths
-        foreach (var r in results)
+        // --- Parallel version ---
+        sw.Restart();
+        Parallel.ForEach(urls, url =>
         {
-            Console.WriteLine(r.Length);
-        }
-    }
-
-    static async Task<string> FetchAsync(string url)
-    {
-        using HttpClient client = new HttpClient();
-        return await client.GetStringAsync(url); // await frees thread while waiting
+            try
+            {
+                string result = httpClient.GetStringAsync(url).Result; // blocking
+                Console.WriteLine(result.Substring(0, 40) + "...");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching {url}: {ex.Message}");
+            }
+        });
+        sw.Stop();
+        Console.WriteLine($"Parallel.ForEach finished in {sw.ElapsedMilliseconds} ms");
     }
 }
-/* 
-Async fetch finished in 987 ms
-1256
-1256
-1256
 
-✅ Why async helps here:
-Each GetStringAsync waits for network I/O.
-Async does not block the main thread.
-All requests start together, and CPU can do other work.
-Using Parallel.For here would not help, because threads would just block waiting for the network response, wasting CPU thread
-*/
-#endregion
-
-
-//#region HTTP Fetching Parallel
-//class Program
-//{
-//    static void Main()
-//    {
-//        string[] urls = new string[]
-//        {
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//            "https://example.com",
-//            "https://example.org",
-//            "https://example.net",
-//        };
-
-//        var sw = System.Diagnostics.Stopwatch.StartNew();
-
-//        Parallel.For(0, urls.Length, i =>
-//        {
-//            using HttpClient client = new HttpClient();
-//            // This blocks the thread until the HTTP request finishes
-//            string result = client.GetStringAsync(urls[i]).GetAwaiter().GetResult();
-//            Console.WriteLine($"Fetched {urls[i]} length: {result.Length}");
-//        });
-
-//        sw.Stop();
-//        Console.WriteLine($"Parallel.For fetch finished in {sw.ElapsedMilliseconds} ms");
-//    }
-//}
-
-///* 
-//Fetched https://example.com length: 1256
-//Fetched https://example.com length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.com length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.com length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.com length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.com length: 1256
-//Fetched https://example.org length: 1256
-//Fetched https://example.net length: 1256
-//Fetched https://example.net length: 1256
-//Fetched https://example.net length: 1256
-//Fetched https://example.net length: 1256
-//Fetched https://example.net length: 1256
-//Fetched https://example.net length: 1256
-//Parallel.For fetch finished in 1147 ms
-//*/
-//#endregion
+// here async is good.
