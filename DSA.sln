@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueStack", "src\Queue\Que
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A_Practice", "src\A_Practice\A_Practice.csproj", "{9415FD99-E6D0-400D-91D0-BB086EF7010A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParallelvsAsyncProgramming", "ParallelvsAsyncProgramming\ParallelvsAsyncProgramming.csproj", "{58F70DF8-E286-414E-A93D-0BB4A3FC0FC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9415FD99-E6D0-400D-91D0-BB086EF7010A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9415FD99-E6D0-400D-91D0-BB086EF7010A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9415FD99-E6D0-400D-91D0-BB086EF7010A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F70DF8-E286-414E-A93D-0BB4A3FC0FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F70DF8-E286-414E-A93D-0BB4A3FC0FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F70DF8-E286-414E-A93D-0BB4A3FC0FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F70DF8-E286-414E-A93D-0BB4A3FC0FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
